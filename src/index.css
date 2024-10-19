@@ -5,6 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    /* margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; 
+    background-image: url('https://www.transparenttextures.com/patterns/white-linen.png'); 
+    font-family: Arial, sans-serif;  */
+    background-image: url(../public/Images/pexels-prithiviraj-13030163.jpg); 
+    background-size: cover; 
+    background-position: center; 
+    font-family: Arial, sans-serif; 
 }
 
 code {
