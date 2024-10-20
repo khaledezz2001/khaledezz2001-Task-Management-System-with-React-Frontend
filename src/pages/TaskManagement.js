@@ -12,6 +12,7 @@ function TaskManagement() {
   const [taskStatus, setTaskStatus] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [sortMethod, setSortMethod] = useState("normal"); // State for sorting method
 
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks);
@@ -68,11 +69,26 @@ function TaskManagement() {
     }
   };
 
-  // Function to sort tasks based on priority
-  const sortedTasks = [...tasks].sort((a, b) => {
-    const priorityOrder = { high: 1, medium: 2, low: 3 };
-    return priorityOrder[a.priority] - priorityOrder[b.priority];
-  });
+  // Function to sort tasks based on the current sort method
+  const getSortedTasks = () => {
+    switch (sortMethod) {
+      case "status":
+        return [...tasks].sort((a, b) => {
+          const statusOrder = { pending: 1, "in-progress": 2, completed: 3 };
+          return statusOrder[a.status] - statusOrder[b.status];
+        });
+      case "priority":
+        return [...tasks].sort((a, b) => {
+          const priorityOrder = { low: 3, medium: 2, high: 1 };
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        });
+      case "normal":
+      default:
+        return tasks; // Return tasks in their original order
+    }
+  };
+
+  const sortedTasks = getSortedTasks();
 
   return (
     <div className="task-container">
@@ -123,24 +139,29 @@ function TaskManagement() {
             required
           >
             <option value="">Select Status</option>
+            <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
-            <option value="pending">Pending</option>
           </select>
         </div>
         <button type="submit">
           {editingTaskId ? "Update Task" : "Add Task"}
         </button>
       </form>
+      <div className="sorting-buttons">
+        <h3>Sort Tasks By:</h3>
+        <button onClick={() => setSortMethod("normal")}>Normal</button>
+        <button onClick={() => setSortMethod("status")}>Status</button>
+        <button onClick={() => setSortMethod("priority")}>Priority</button>
+      </div>
       <div className="task-list">
-        <h3>Task List</h3>
+        <h3>Task List (Sorted by {sortMethod})</h3>
         <ul>
           {sortedTasks.map((task) => (
             <li
               key={task.id}
               style={{ backgroundColor: getPriorityColor(task.priority) }}
             >
-              
               Title: <strong>{task.title}</strong>
               <hr></hr>
               <p>{task.description}</p>
