@@ -179,8 +179,7 @@ function TaskManagement() {
         </ul>
       </div>
       <p>
-        <Link to="/">Go to Login</Link> |{" "}
-        <Link to="/signup">Go to Sign Up</Link>
+        <Link to="/">Go to Logout</Link>
       </p>
     </div>
   );
